@@ -8,7 +8,7 @@ st.title("Energy Consumption Monitoring Dashboard")
 conn = psycopg2.connect(
     dbname="energy_dw",
     user="postgres",
-    password="yeahitsme",
+    password="your password",
     host="localhost",
     port="5432"
 )

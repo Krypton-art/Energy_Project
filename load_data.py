@@ -8,7 +8,7 @@ df = pd.read_csv("energy_data.csv")
 conn = psycopg2.connect(
     dbname="energy_dw",
     user="postgres",
-    password="yeahitsme",
+    password="your password",
     host="localhost",
     port="5432"
 )
