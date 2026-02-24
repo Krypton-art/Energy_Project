@@ -99,12 +99,16 @@ try:
         ON F.DATE = T.DATE
     GROUP BY T.MONTH
     ORDER BY T.MONTH
+
     """
 
     monthly_df = pd.read_sql(query_monthly, engine)
 
+
+    monthly_df.columns = monthly_df.columns.str.upper()
+
     st.line_chart(
-        monthly_df.set_index("MONTH")["TOTAL_USAGE"]
+        monthly_df.set_index(monthly_df.columns[0])[monthly_df.columns[1]]
     )
 
 except Exception as e:
