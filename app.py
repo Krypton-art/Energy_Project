@@ -84,7 +84,26 @@ try:
         st.dataframe(top_df)
 
     st.subheader("📊 Monthly Consumption Trend")
-    st.line_chart(monthly_df.set_index("MONTHLY_CONSUMPTION"))
+    # -----------------------------
+    # Monthly Consumption Trend
+    # -----------------------------
+
+    st.subheader("📊 Monthly Consumption Trend")
+
+    query_monthly = """
+    SELECT 
+        MONTH,
+        SUM(CONSUMPTION_KWH) AS TOTAL_USAGE
+    FROM FACT_ENERGY_USAGE
+    GROUP BY MONTH
+    ORDER BY MONTH
+    """
+
+    monthly_df = pd.read_sql(query_monthly, engine)
+
+    st.line_chart(
+        monthly_df.set_index("MONTH")["TOTAL_USAGE"]
+    )
 
 except Exception as e:
     st.error("Error connecting to Snowflake")
