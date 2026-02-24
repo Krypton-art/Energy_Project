@@ -1,48 +1,32 @@
 import streamlit as st
 import pandas as pd
-import psycopg2
 
-st.title("Energy Consumption Monitoring Dashboard")
+st.set_page_config(page_title="Energy Monitoring System", layout="wide")
 
-# Database connection
-conn = psycopg2.connect(
-    dbname="energy_dw",
-    user="postgres",
-    password="your password",
-    host="localhost",
-    port="5432"
-)
+st.title("⚡ Energy Consumption Monitoring Dashboard")
 
-# Total consumption
-query_total = """
-SELECT SUM(consumption_kwh) FROM fact_energy_usage;
-"""
-total = pd.read_sql(query_total, conn)
+st.markdown("End-to-End Data Engineering Project Demo")
 
-st.metric("Total Energy Consumption (kWh)", round(total.iloc[0,0],2))
+# Load aggregated data
+df = pd.read_csv("monthly_aggregated.csv")
 
-# Monthly trend
-query_monthly = """
-SELECT dt.year, dt.month, SUM(f.consumption_kwh) as total
-FROM fact_energy_usage f
-JOIN dim_time dt ON f.time_id = dt.time_id
-GROUP BY dt.year, dt.month
-ORDER BY dt.year, dt.month;
-"""
+# KPI
+total_energy = df["total_consumption"].sum()
+st.metric("Total Energy Consumption (kWh)", round(total_energy, 2))
 
-monthly = pd.read_sql(query_monthly, conn)
-st.line_chart(monthly["total"])
+st.divider()
 
-# Top 5 customers
-query_top = """
-SELECT customer_id, SUM(consumption_kwh) as total_usage
-FROM fact_energy_usage
-GROUP BY customer_id
-ORDER BY total_usage DESC
-LIMIT 5;
-"""
+# Layout
+col1, col2 = st.columns(2)
 
-top_customers = pd.read_sql(query_top, conn)
-st.bar_chart(top_customers.set_index("customer_id"))
+with col1:
+    st.subheader("Monthly Energy Consumption Trend")
+    st.line_chart(df["total_consumption"])
 
-conn.close()
+with col2:
+    st.subheader("Monthly Consumption Distribution")
+    st.bar_chart(df.set_index("month")["total_consumption"])
+
+st.divider()
+
+st.success("Project Architecture: CSV → ETL → PostgreSQL → SQL → Spark → Streamlit")
