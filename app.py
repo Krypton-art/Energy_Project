@@ -1,32 +1,91 @@
 import streamlit as st
 import pandas as pd
+import os
+from sqlalchemy import create_engine
 
 st.set_page_config(page_title="Energy Monitoring System", layout="wide")
 
-st.title("⚡ Energy Consumption Monitoring Dashboard")
+st.title("⚡ Energy Consumption Monitoring System")
 
-st.markdown("End-to-End Data Engineering Project Demo")
+# -------------------------------
+# Snowflake Connection
+# -------------------------------
 
-# Load aggregated data
-df = pd.read_csv("monthly_aggregated.csv")
+@st.cache_resource
+def get_engine():
+    user = os.getenv("SNOWFLAKE_USER")
+    password = os.getenv("SNOWFLAKE_PASSWORD")
+    account = os.getenv("SNOWFLAKE_ACCOUNT")
+    warehouse = os.getenv("SNOWFLAKE_WAREHOUSE")
+    database = os.getenv("SNOWFLAKE_DATABASE")
+    schema = os.getenv("SNOWFLAKE_SCHEMA")
 
-# KPI
-total_energy = df["total_consumption"].sum()
-st.metric("Total Energy Consumption (kWh)", round(total_energy, 2))
+    connection_string = (
+        f"snowflake://{user}:{password}@{account}/"
+        f"{database}/{schema}?warehouse={warehouse}"
+    )
 
-st.divider()
+    engine = create_engine(connection_string)
+    return engine
 
-# Layout
-col1, col2 = st.columns(2)
+engine = get_engine()
 
-with col1:
-    st.subheader("Monthly Energy Consumption Trend")
-    st.line_chart(df["total_consumption"])
+# -------------------------------
+# Queries
+# -------------------------------
 
-with col2:
-    st.subheader("Monthly Consumption Distribution")
-    st.bar_chart(df.set_index("month")["total_consumption"])
+query_total = """
+SELECT SUM(CONSUMPTION_KWH) AS TOTAL_CONSUMPTION
+FROM FACT_ENERGY_USAGE;
+"""
 
-st.divider()
+query_monthly = """
+SELECT 
+    YEAR(DATE) AS YEAR,
+    MONTH(DATE) AS MONTH,
+    SUM(CONSUMPTION_KWH) AS MONTHLY_CONSUMPTION
+FROM FACT_ENERGY_USAGE
+GROUP BY YEAR(DATE), MONTH(DATE)
+ORDER BY YEAR, MONTH;
+"""
 
-st.success("Project Architecture: CSV → ETL → PostgreSQL → SQL → Spark → Streamlit")
+query_top = """
+SELECT 
+    CUSTOMER_ID,
+    SUM(CONSUMPTION_KWH) AS TOTAL_USAGE
+FROM FACT_ENERGY_USAGE
+GROUP BY CUSTOMER_ID
+ORDER BY TOTAL_USAGE DESC
+LIMIT 5;
+"""
+
+# -------------------------------
+# Fetch Data
+# -------------------------------
+
+try:
+    total_df = pd.read_sql(query_total, engine)
+    monthly_df = pd.read_sql(query_monthly, engine)
+    top_df = pd.read_sql(query_top, engine)
+
+    # -------------------------------
+    # Dashboard Layout
+    # -------------------------------
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.metric(
+            "Total Energy Consumption (kWh)",
+            f"{int(total_df.iloc[0,0])}"
+        )
+
+    with col2:
+        st.dataframe(top_df)
+
+    st.subheader("📊 Monthly Consumption Trend")
+    st.line_chart(monthly_df.set_index("MONTHLY_CONSUMPTION"))
+
+except Exception as e:
+    st.error("Error connecting to Snowflake")
+    st.write(e)
