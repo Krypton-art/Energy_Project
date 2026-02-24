@@ -92,11 +92,13 @@ try:
 
     query_monthly = """
     SELECT 
-        MONTH,
-        SUM(CONSUMPTION_KWH) AS TOTAL_USAGE
-    FROM FACT_ENERGY_USAGE
-    GROUP BY MONTH
-    ORDER BY MONTH
+        T.MONTH,
+        SUM(F.CONSUMPTION_KWH) AS TOTAL_USAGE
+    FROM FACT_ENERGY_USAGE F
+    JOIN DIM_TIME T
+        ON F.DATE = T.DATE
+    GROUP BY T.MONTH
+    ORDER BY T.MONTH
     """
 
     monthly_df = pd.read_sql(query_monthly, engine)
