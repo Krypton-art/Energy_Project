@@ -1,87 +1,143 @@
-# Energy_Project
-End-to-End Data Engineering Pipeline for Energy Consumption Analytics
-# ⚡ Energy Consumption Monitoring System
+⚡ Energy Consumption Monitoring System
 
-## 📌 Overview
-This project implements an end-to-end data engineering pipeline for analyzing energy consumption data. It demonstrates data warehousing, ETL processing, advanced SQL analytics, batch processing with Spark, and interactive dashboard visualization.
+A cloud-based Energy Consumption Monitoring System built using Snowflake Data Warehouse and Streamlit, designed with a Star Schema architecture and deployed as a live cloud dashboard.
 
----
+📌 Project Overview
 
-## 🏗 Architecture
+This project demonstrates a complete end-to-end data engineering workflow:
 
-Energy CSV → Python ETL → PostgreSQL Data Warehouse → Advanced SQL → PySpark Batch Processing → Streamlit Dashboard
+Data ingestion
 
----
+Data warehouse modeling (Star Schema)
 
-## 🗄 Data Warehouse Design
+Advanced SQL aggregation
 
-- Star Schema Model
-- Fact Table: `fact_energy_usage`
-- Dimension Tables:
-  - `dim_customer`
-  - `dim_time`
-  - `dim_location`
+Cloud data storage (Snowflake)
 
----
+Secure cloud deployment
 
-## 🔄 ETL Pipeline
+Interactive dashboard visualization
 
-- Data extraction from CSV
-- Cleaning & transformation using Pandas
-- Loading into PostgreSQL using Psycopg2
+All analytics computations are executed inside Snowflake, and results are visualized via a live Streamlit dashboard.
 
----
+🏗 System Architecture
+Streamlit Cloud (Frontend + Python)
+        │
+        │  SQLAlchemy Connection
+        ▼
+Snowflake Cloud Data Warehouse
+        │
+        ▼
+Star Schema (Fact + Dimension Tables)
+🗄 Data Warehouse Design
+⭐ Fact Table
 
-## 📊 Advanced SQL
+FACT_ENERGY_USAGE
 
-- Common Table Expressions (CTE)
-- Window Functions (RANK, Moving Average)
-- Indexing & Performance Optimization
-- Query Profiling using EXPLAIN ANALYZE
+CUSTOMER_ID
 
----
+DATE
 
-## ⚡ Apache Spark
+CONSUMPTION_KWH
 
-- Batch processing in local mode
-- Monthly aggregation
-- Scalable architecture simulation
+COST
 
----
+Stores transactional energy consumption records.
 
-## 📈 Dashboard
+📘 Dimension Tables
 
-Built using Streamlit:
-- KPI Metrics
-- Monthly Trends
-- Top Customers
-- Interactive Visualization
+DIM_TIME
 
----
+DATE
 
-## 🚀 Technologies Used
+MONTH
 
-- Python
-- PostgreSQL
-- Apache Spark
-- Streamlit
-- Pandas
-- Advanced SQL
+YEAR
 
----
+DIM_CUSTOMER
 
-## 🔮 Future Improvements
+CUSTOMER_ID
 
-- Real-time streaming with Kafka
-- Cloud warehouse (Snowflake/BigQuery)
-- Machine Learning for consumption forecasting
-- Docker containerization
+CUSTOMER_TYPE
 
----
+Dimension tables are used to normalize data and improve aggregation performance.
 
-## 🌐 Live Demo
+📊 Features
 
-https://energy-consumption-monitoring-system.streamlit.app
+✔ Star Schema Data Modeling
+✔ SQL Aggregations (SUM, GROUP BY, JOIN)
+✔ Fact–Dimension JOIN Queries
+✔ Monthly Consumption Trend Analysis
+✔ Top Customer Analysis
+✔ Secure Cloud-to-Cloud Integration
+✔ Live Deployment
+✔ Snowflake + Streamlit Integration
 
-## 👨‍💻 Author
-Somya
+🚀 Live Dashboard
+
+🔗 Live Application:
+((https://energy-consumption-monitoring-system.streamlit.app/))
+
+🔐 Security Implementation
+
+Snowflake credentials stored securely using Streamlit Cloud Secrets
+
+No hardcoded passwords in source code
+
+Secure SQLAlchemy connection string
+
+Cloud-to-cloud communication
+
+🧠 Tech Stack
+
+❄ Snowflake (Cloud Data Warehouse)
+
+🐍 Python
+
+🧮 SQL
+
+🔗 SQLAlchemy
+
+📊 Pandas
+
+📈 Streamlit
+
+🌐 Streamlit Cloud
+
+🗂 GitHub
+
+📈 Sample Analytics Implemented
+
+Total Energy Consumption KPI
+
+Monthly Consumption Trend
+
+Top Customers by Usage
+
+Star Schema Join Queries
+
+🎯 Key Learning Outcomes
+
+Designing a Star Schema Data Warehouse
+
+Connecting Cloud Applications to Snowflake
+
+Writing optimized SQL aggregation queries
+
+Secure credential management
+
+Deploying real-time cloud dashboards
+
+📌 Why This Project Matters
+
+This project demonstrates:
+
+Practical data warehousing skills
+
+Cloud-based analytics architecture
+
+Real-world deployment experience
+
+End-to-end data engineering workflow
+
+It simulates how production analytics systems are built in modern cloud environments.
