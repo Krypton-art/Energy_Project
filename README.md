@@ -79,5 +79,9 @@ Built using Streamlit:
 
 ---
 
+## 🌐 Live Demo
+
+https://energy-consumption-monitoring-system.streamlit.app
+
 ## 👨‍💻 Author
 Somya
