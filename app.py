@@ -83,7 +83,7 @@ try:
     with col2:
         st.dataframe(top_df)
 
-    st.subheader("📊 Monthly Consumption Trend")
+    
     # -----------------------------
     # Monthly Consumption Trend
     # -----------------------------
