@@ -1,39 +1,49 @@
 ⚡ Energy Consumption Monitoring System
 
-A cloud-based Energy Consumption Monitoring System built using Snowflake (Cloud Data Warehouse) and Streamlit.
-This project demonstrates a complete end-to-end data engineering workflow including data modeling, SQL analytics, cloud integration, and live dashboard deployment.
+A cloud-based data warehousing and analytics system built using Snowflake and Streamlit.
+This project demonstrates real-world data engineering concepts, including Star Schema design, SQL analytics, and secure cloud deployment.
 
-📌 Project Overview
+🚀 Project Overview
 
-This system stores and processes energy usage data inside Snowflake using a Star Schema design.
-All heavy computations (aggregations, joins, grouping) are performed inside Snowflake, and results are visualized through a live Streamlit dashboard.
+This system:
 
-The application is deployed on Streamlit Cloud and securely connects to Snowflake using SQLAlchemy.
+Stores energy consumption data inside Snowflake
+
+Implements a Star Schema Data Warehouse
+
+Performs aggregations directly in the warehouse
+
+Connects securely using SQLAlchemy
+
+Displays insights through a live Streamlit dashboard
+
+All heavy computations are executed inside Snowflake — not locally.
 
 🏗 System Architecture
-
 Streamlit Cloud (Frontend + Python App)
-→ SQLAlchemy Connection
-→ Snowflake Cloud Data Warehouse
-→ Star Schema (Fact + Dimension Tables)
-
+            │
+            ▼
+     SQLAlchemy Connection
+            │
+            ▼
+   Snowflake Cloud Data Warehouse
+            │
+            ▼
+     Star Schema (Fact + Dimensions)
 🗄 Data Warehouse Design
-Fact Table
+⭐ Fact Table
 
 FACT_ENERGY_USAGE
 
-CUSTOMER_ID
+Column	Description
+CUSTOMER_ID	Unique customer identifier
+DATE	Energy usage date
+CONSUMPTION_KWH	Energy consumed (kWh)
+COST	Cost of consumption
 
-DATE
+Stores transactional energy usage records.
 
-CONSUMPTION_KWH
-
-COST
-
-This table stores transactional energy consumption records.
-
-Dimension Tables
-
+📘 Dimension Tables
 DIM_TIME
 
 DATE
@@ -42,83 +52,92 @@ MONTH
 
 YEAR
 
+Used for time-based aggregations.
+
 DIM_CUSTOMER
 
 CUSTOMER_ID
 
 CUSTOMER_TYPE
 
-Dimension tables are used to normalize time and customer data and support efficient aggregation queries.
+Used for customer-level analytics.
 
 📊 Implemented Features
 
-Star Schema data modeling
+✔ Total Energy Consumption KPI
+✔ Monthly Consumption Trend (Fact–Dimension JOIN)
+✔ Top Customers by Usage
+✔ SQL Aggregations (SUM, GROUP BY)
+✔ Cloud-to-Cloud Integration
+✔ Secure Secrets Management
+✔ Live Dashboard Deployment
 
-Fact and dimension table joins
+🔐 Security Implementation
 
-Monthly energy consumption trend analysis
+Credentials stored using Streamlit Cloud Secrets
 
-Top customers by energy usage
+No hardcoded passwords in the repository
 
-Total energy KPI calculation
+Secure SQLAlchemy connection string
 
-Secure Snowflake connection using environment secrets
-
-Cloud-to-cloud deployment (Streamlit → Snowflake)
-
-🚀 Live Dashboard
-
-Live Application Link:
-(Add your Streamlit link here)
-
-🔐 Security
-
-Snowflake credentials are stored securely using Streamlit Cloud Secrets.
-
-No hardcoded credentials in the repository.
-
-Secure SQLAlchemy-based connection.
-
-All processing happens inside Snowflake.
+All processing handled inside Snowflake
 
 🧠 Tech Stack
 
-Snowflake (Cloud Data Warehouse)
+❄ Snowflake (Cloud Data Warehouse)
 
-SQL
+🐍 Python
 
-Python
+🧮 SQL
 
-SQLAlchemy
+🔗 SQLAlchemy
 
-Pandas
+📊 Pandas
 
-Streamlit
+📈 Streamlit
 
-GitHub
+🌐 Streamlit Cloud
 
-Streamlit Cloud
+🗂 GitHub
 
-📈 Analytics Demonstrated
+📈 Analytics Performed
 
-Total Energy Consumption (KPI)
+Total consumption calculation
 
-Monthly Consumption Trend
+Monthly aggregation using Star Schema JOIN
 
-Top Customers by Usage
+Customer-level ranking
 
-Star Schema JOIN queries
+Cloud-executed SQL queries
 
-🎯 Key Learning Outcomes
+🎯 Key Highlights
 
-Designing a Star Schema Data Warehouse
+Implements Star Schema Data Modeling
 
-Writing aggregation queries in Snowflake
+Uses cloud-native data warehousing
 
-Cloud database integration using SQLAlchemy
+Demonstrates real-time dashboard deployment
 
-Secure secret management
+Follows secure credential management practices
 
-Deploying real-time dashboards
+Simulates a production-grade analytics pipeline
 
-This project simulates a real-world cloud-based analytics system used in modern data engineering environments.
+🌐 Live Application
+
+🔗 (https://energy-consumption-monitoring-system.streamlit.app/)
+
+📌 Why This Project Matters
+
+This project demonstrates practical knowledge of:
+
+Data Warehousing Concepts
+
+Cloud Database Integration
+
+SQL-Based Analytics
+
+Secure Deployment Practices
+
+End-to-End Data Engineering Workflow
+
+It reflects how modern analytics systems are built in real production environments.
